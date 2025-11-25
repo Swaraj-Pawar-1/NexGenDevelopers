@@ -1,0 +1,61 @@
+Create a Redux store with a user slice for authentication
+
+
+1. Create a Redux store using Redux Toolkit
+Use configureStore() from @reduxjs/toolkit.
+Combine the user slice reducer in the store.
+
+============================================================
+2. slice should contain
+============================================================
+{
+  user: null | {
+    id: string;
+    name: string;
+    email: string;
+    token: string;
+  };
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
+}
+
+
+============================================================
+3. Reducers / Actions Needed
+============================================================
+1.loginStart()
+  Sets loading to true
+  Clears error
+
+2.loginSuccess(userData)
+  Saves the user data to state
+  Sets isAuthenticated to true
+  Sets loading to false
+
+3.loginFailure(errorMessage)
+  Saves error message to state
+  Sets isAuthenticated to false
+  Sets loading to false
+
+4. logout()
+  Clears user data
+  Sets isAuthenticated to false
+
+============================================================
+4. Folder Structure
+============================================================
+src/
+  store/
+    index.ts
+    userSlice.ts
+
+
+============================================================
+6. Evaluation Criteria
+============================================================
+- Correct Redux Toolkit usage
+- Proper state updates in reducers
+- Working async thunk
+- Clean, readable code
+- correct state update 
