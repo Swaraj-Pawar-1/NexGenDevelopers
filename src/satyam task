@@ -1,0 +1,76 @@
+Implement JWT-based authentication for an existing Redux setup. including access token, refresh token, and automatic token refresh.
+
+============================================================
+1. Setup
+============================================================
+- Assume a Redux slice `userSlice` already exists with actions:
+  - loginSuccess(payload)
+  - logout()
+  - setUser(payload)
+- Use axios for API requests
+- The API provides endpoints:
+  - POST /auth/login → returns { accessToken, refreshToken, user }
+  - POST /auth/refresh → returns { accessToken }
+  - POST /auth/logout → invalidates tokens
+
+============================================================
+2. Access + Refresh Token Handling
+============================================================
+Implement:
+
+- Store tokens securely:
+  - Access token: in memory (not localStorage)
+  - Refresh token: httpOnly cookie OR localStorage (for simplicity localStorage is fine)
+- Include access token in Authorization header for protected requests
+- Automatically refresh the access token when it expires, using the refresh token
+- If refresh fails (expired refresh token), force logout
+
+============================================================
+3. API Utils in service folder
+============================================================
+Create reusable API utility functions:
+
+1. loginUser(credentials)
+- Calls /auth/login
+- On success: dispatch loginSuccess(user) and save tokens
+- On failure: handle errors
+
+2. refreshAccessToken()
+- Calls /auth/refresh
+- Updates access token in memory
+- Returns new access token
+
+3. logoutUser()
+- Calls /auth/logout
+- Clears user and tokens from state and storage
+
+4. requestWithAuth(config)
+- Wraps fetch or axios request
+- Automatically attaches access token
+- On 401, calls refreshAccessToken() and retries once
+- If refresh fails, dispatch logout
+
+============================================================
+4. Bonus (optional, but nice to have)
+============================================================
+- Handle concurrent API calls gracefully during token refresh
+- Implement a "remember me" option for long-lived sessions
+- Store tokens in cookies instead of localStorage for better security
+
+============================================================
+5. Folder Structure Suggestion
+============================================================
+src/
+  store/
+    userSlice.ts
+  utils/
+    api.ts
+  components/
+
+============================================================
+7. Evaluation Criteria
+============================================================
+- Secure handling of tokens
+- Automatic access token refresh
+- Clean Redux integration
+- Proper error handling
